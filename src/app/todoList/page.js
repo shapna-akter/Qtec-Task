@@ -1,10 +1,13 @@
 "use client"
 
+import Modal from '@/components/shared/Moda';
 import React, { useState } from 'react';
 
 const TodoList = () => {
     const [newTask, setNewTask] = useState('');
     const [tasks, setTasks] = useState([]);
+    const [editTask, setEditTask] = useState(null);
+
     console.log(tasks);
 
     const addTask = () => {
@@ -75,7 +78,7 @@ const TodoList = () => {
                                             <p>Task: <span className={`${task.completed ? 'line-through' : ''}`}>
                                                 {task.text}
                                             </span></p>
-                                            
+
                                             <p>Task Priority: {task?.priority}</p>
                                         </div>
                                         <div className='flex items-center justify-center gap-2'>
@@ -86,13 +89,11 @@ const TodoList = () => {
                                                 onChange={() => toggleTaskStatus(task.id)}
 
                                             />
-
-                                            <button
-                                                className="bg-[#3776D4] text-white px-2 py-1"
-
-                                            >
+                                            <label htmlFor="task-modal" className="bg-[#3776D4] text-white px-2 py-1 cursor-pointer">
                                                 Edit
-                                            </button>
+                                            </label>
+
+                                            <Modal task={task}></Modal>
                                             <button
                                                 className="bg-red-500 text-white px-2 py-1"
                                                 onClick={() => deleteTask(task.id)}
