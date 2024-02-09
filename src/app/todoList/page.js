@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const priorities = {
     low: 'bg-blue-500',
@@ -13,6 +13,18 @@ const TodoList = () => {
     const [newTask, setNewTask] = useState('');
     const [tasks, setTasks] = useState([]);
     const [editTask, setEditTask] = useState(null);
+
+     // Load tasks from local storage
+     useEffect(() => {
+        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        setTasks(storedTasks);
+    }, []);
+
+    // Save tasks to local storage
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks]);
+
 
     const addTask = () => {
         if (newTask.trim() === '') return;
