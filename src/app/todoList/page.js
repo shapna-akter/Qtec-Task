@@ -8,7 +8,22 @@ const TodoList = () => {
     const [tasks, setTasks] = useState([]);
     const [editTask, setEditTask] = useState(null);
 
-    console.log(tasks);
+    const editTaskHandler = (taskId) => {
+        const taskToEdit = tasks.find((task) => task.id === taskId);
+        setEditTask(taskToEdit);
+    };
+
+    const updateTask = () => {
+        if (editTask.text.trim() === '') return;
+
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === editTask.id ? { ...task, text: editTask.text, priority: editTask.priority } : task
+            )
+        );
+
+        setEditTask(null);
+    };
 
     const addTask = () => {
         if (newTask.trim() === '') return;
@@ -89,11 +104,18 @@ const TodoList = () => {
                                                 onChange={() => toggleTaskStatus(task.id)}
 
                                             />
-                                            <label htmlFor="task-modal" className="bg-[#3776D4] text-white px-2 py-1 cursor-pointer">
+                                            <button
+                                                className="bg-[#3776D4] text-white px-2 py-1 cursor-pointer"
+                                                onClick={() => editTaskHandler(task.id)}
+                                            >
+                                                Edit
+                                            </button>
+
+                                            {/* <label htmlFor="task-modal" className="bg-[#3776D4] text-white px-2 py-1 cursor-pointer">
                                                 Edit
                                             </label>
 
-                                            <Modal task={task}></Modal>
+                                            <Modal task={task}></Modal> */}
                                             <button
                                                 className="bg-red-500 text-white px-2 py-1"
                                                 onClick={() => deleteTask(task.id)}
@@ -108,6 +130,52 @@ const TodoList = () => {
                         ))}
                 </div>
             )}
+
+
+            {editTask && (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                    <div className="modal-box">
+                        <h3 className="font-semibold text-lg bg-[#3776D4] text-base-100 p-2">
+                            Update Task
+                        </h3>
+                        <div className="px-4 py-3 font-medium text-sm text-left">
+                            <label className="text-[#3776D4] mb-2">Edit Task</label>
+                            <input
+                                type="text"
+                                value={editTask.text}
+                                className="border p-2 mb-2 w-full"
+                                onChange={(e) => setEditTask({ ...editTask, text: e.target.value })}
+                            />
+                            <label className="text-[#3776D4] text-left mb-2">Priority</label>
+                            <select
+                                className="border p-2 mb-2 w-full"
+                                value={editTask.priority}
+                                onChange={(e) => setEditTask({ ...editTask, priority: e.target.value })}
+                            >
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                        <div className="modal-action">
+                            <button
+                                className="btn bg-[#3776D4] hover:bg-primary text-base-100 btn-sm"
+                                onClick={updateTask}
+                            >
+                                Save
+                            </button>
+
+                            <button
+                                className="btn btn-neutral text-base-100 btn-sm"
+                                onClick={() => setEditTask(null)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };
