@@ -72,9 +72,10 @@ const TodoList = () => {
                                     </div>
                                     <div className="card-body px-2">
                                         <div className="bg-[#3776D4] text-base-100 py-6 px-2 text-center text-2xl">
-                                            <p className={`${task.completed ? 'line-through' : ''}`}>
+                                            <p>Task: <span className={`${task.completed ? 'line-through' : ''}`}>
                                                 {task.text}
-                                            </p>
+                                            </span></p>
+                                            
                                             <p>Task Priority: {task?.priority}</p>
                                         </div>
                                         <div className='flex items-center justify-center gap-2'>
