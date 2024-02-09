@@ -1,13 +1,41 @@
 "use client"
 
-import Modal from '@/components/shared/Moda';
 import React, { useState } from 'react';
+
+const priorities = {
+    low: 'bg-blue-500',
+    medium: 'bg-yellow-500',
+    high: 'bg-red-500',
+};
+
 
 const TodoList = () => {
     const [newTask, setNewTask] = useState('');
     const [tasks, setTasks] = useState([]);
     const [editTask, setEditTask] = useState(null);
 
+    const addTask = () => {
+        if (newTask.trim() === '') return;
+
+        const taskToAdd = {
+            id: Date.now(),
+            text: newTask,
+            completed: false,
+            priority: 'medium',
+        };
+        // Update tasks state
+        setTasks((prevTasks) => [...prevTasks, taskToAdd]);
+        setNewTask('');
+
+        // Save tasks to local storage
+        const updatedTasks = [...tasks, taskToAdd];
+        localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    };
+    const toggleTaskStatus = (taskId) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) => (task.id === taskId ? { ...task, completed: !task.completed } : task))
+        );
+    };
     const editTaskHandler = (taskId) => {
         const taskToEdit = tasks.find((task) => task.id === taskId);
         setEditTask(taskToEdit);
@@ -23,26 +51,6 @@ const TodoList = () => {
         );
 
         setEditTask(null);
-    };
-
-    const addTask = () => {
-        if (newTask.trim() === '') return;
-
-        const taskToAdd = {
-            id: Date.now(),
-            text: newTask,
-            completed: false,
-            priority: 'medium',
-        };
-        console.log(taskToAdd);
-
-        setTasks((prevTasks) => [...prevTasks, taskToAdd]);
-        setNewTask('');
-    };
-    const toggleTaskStatus = (taskId) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) => (task.id === taskId ? { ...task, completed: !task.completed } : task))
-        );
     };
     const deleteTask = (taskId) => {
         console.log(taskId);
@@ -94,7 +102,10 @@ const TodoList = () => {
                                                 {task.text}
                                             </span></p>
 
-                                            <p>Task Priority: {task?.priority}</p>
+
+                                            <p className='mt-2'>Task Priority: <span className={`${priorities[task.priority]} text-white px-2 rounded`}>
+                                                {task.priority}
+                                            </span></p>
                                         </div>
                                         <div className='flex items-center justify-center gap-2'>
                                             <input
