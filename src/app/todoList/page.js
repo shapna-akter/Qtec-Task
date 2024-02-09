@@ -21,12 +21,16 @@ const TodoList = () => {
         setTasks((prevTasks) => [...prevTasks, taskToAdd]);
         setNewTask('');
     };
-
+    const toggleTaskStatus = (taskId) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) => (task.id === taskId ? { ...task, completed: !task.completed } : task))
+        );
+    };
     const deleteTask = (taskId) => {
         console.log(taskId);
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     };
-    
+
     return (
         <div className="container mx-auto mt-8 p-4">
             <h2 className="text-4xl font-medium text-primary text-center mb-4">
@@ -68,13 +72,17 @@ const TodoList = () => {
                                     </div>
                                     <div className="card-body px-2">
                                         <div className="bg-[#3776D4] text-base-100 py-6 px-2 text-center text-2xl">
-                                            <p>Task: {task?.text}</p>
+                                            <p className={`${task.completed ? 'line-through' : ''}`}>
+                                                {task.text}
+                                            </p>
                                             <p>Task Priority: {task?.priority}</p>
                                         </div>
                                         <div className='flex items-center justify-center gap-2'>
                                             <input
                                                 type="checkbox"
                                                 className='checkbox  checkbox-md checkbox-primary'
+                                                checked={task.completed}
+                                                onChange={() => toggleTaskStatus(task.id)}
 
                                             />
 
