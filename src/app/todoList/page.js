@@ -22,6 +22,11 @@ const TodoList = () => {
         setNewTask('');
     };
 
+    const deleteTask = (taskId) => {
+        console.log(taskId);
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    };
+    
     return (
         <div className="container mx-auto mt-8 p-4">
             <h2 className="text-4xl font-medium text-primary text-center mb-4">
@@ -81,7 +86,7 @@ const TodoList = () => {
                                             </button>
                                             <button
                                                 className="bg-red-500 text-white px-2 py-1"
-
+                                                onClick={() => deleteTask(task.id)}
                                             >
                                                 Delete
                                             </button>
