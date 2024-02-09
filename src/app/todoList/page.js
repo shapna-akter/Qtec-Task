@@ -83,7 +83,7 @@ const TodoList = () => {
                     Task not assigned
                 </div>
             ) : (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3 lg:gap-0 shadow-md">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3 shadow-md">
                     {tasks
                         .map((task) => (
                             <div
